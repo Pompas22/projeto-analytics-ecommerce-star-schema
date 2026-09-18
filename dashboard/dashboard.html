@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Analytics de Vendas — E-commerce</title>
+<style>
+  :root {
+    color-scheme: light;
+    --surface-1: #fcfcfb;
+    --page-plane: #f9f9f7;
+    --text-primary: #0b0b0b;
+    --text-secondary: #52514e;
+    --text-muted: #898781;
+    --gridline: #e1e0d9;
+    --baseline: #c3c2b7;
+    --border: rgba(11,11,11,0.10);
+    --good: #0ca30c;
+    --serious: #ec835a;
+
+    --series-1: #2a78d6; /* blue */
+    --series-2: #eb6834; /* orange */
+    --series-3: #1baf7a; /* aqua */
+    --series-4: #eda100; /* yellow */
+    --series-5: #e87ba4; /* magenta */
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) {
+      color-scheme: dark;
+      --surface-1: #1a1a19;
+      --page-plane: #0d0d0d;
+      --text-primary: #ffffff;
+      --text-secondary: #c3c2b7;
+      --text-muted: #898781;
+      --gridline: #2c2c2a;
+      --baseline: #383835;
+      --border: rgba(255,255,255,0.10);
+      --good: #0ca30c;
+      --serious: #ec835a;
+      --series-1: #3987e5;
+      --series-2: #d95926;
+      --series-3: #199e70;
+      --series-4: #c98500;
+      --series-5: #d55181;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --surface-1: #1a1a19;
+    --page-plane: #0d0d0d;
+    --text-primary: #ffffff;
+    --text-secondary: #c3c2b7;
+    --text-muted: #898781;
+    --gridline: #2c2c2a;
+    --baseline: #383835;
+    --border: rgba(255,255,255,0.10);
+    --series-1: #3987e5;
+    --series-2: #d95926;
+    --series-3: #199e70;
+    --series-4: #c98500;
+    --series-5: #d55181;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--page-plane);
+    color: var(--text-primary);
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 28px 20px 60px; }
+  header { margin-bottom: 20px; }
+  header .eyebrow { color: var(--text-muted); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; }
+  header h1 { margin: 4px 0 4px; font-size: 24px; }
+  header p { margin: 0; color: var(--text-secondary); font-size: 14px; max-width: 640px; }
+
+  .kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 20px 0 24px; }
+  @media (max-width: 720px) { .kpis { grid-template-columns: repeat(2, 1fr); } }
+  .kpi-card {
+    background: var(--surface-1);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+  .kpi-label { font-size: 12px; color: var(--text-secondary); margin-bottom: 6px; }
+  .kpi-value { font-size: 22px; font-weight: 600; }
+  .kpi-sub { font-size: 12px; margin-top: 4px; }
+  .kpi-sub.up { color: var(--good); }
+  .kpi-sub.down { color: var(--serious); }
+
+  .panel {
+    background: var(--surface-1);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 18px 10px;
+    margin-bottom: 16px;
+  }
+  .panel h2 { font-size: 14px; margin: 0 0 2px; }
+  .panel .desc { font-size: 12px; color: var(--text-secondary); margin: 0 0 10px; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 780px) { .grid-2 { grid-template-columns: 1fr; } }
+
+  svg { display: block; width: 100%; height: auto; overflow: visible; font-family: inherit; }
+  .axis-label { fill: var(--text-muted); font-size: 10px; }
+  .gridline { stroke: var(--gridline); stroke-width: 1; }
+  .baseline { stroke: var(--baseline); stroke-width: 1; }
+  .bar-label { fill: var(--text-secondary); font-size: 10px; }
+
+  .legend { display: flex; gap: 14px; flex-wrap: wrap; margin: 6px 0 10px; font-size: 11px; color: var(--text-secondary); }
+  .legend span { display: inline-flex; align-items: center; gap: 5px; }
+  .legend i { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+
+  .tooltip {
+    position: absolute;
+    pointer-events: none;
+    background: var(--text-primary);
+    color: var(--surface-1);
+    font-size: 11px;
+    padding: 5px 8px;
+    border-radius: 6px;
+    transform: translate(-50%, -110%);
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity .1s;
+    z-index: 5;
+  }
+  .chart-wrap { position: relative; }
+
+  footer { margin-top: 22px; font-size: 11px; color: var(--text-muted); line-height: 1.6; }
+  footer a { color: var(--series-1); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Projeto de portfólio · Analytics Engineering</div>
+    <h1>Analytics de Vendas — E-commerce (dados sintéticos)</h1>
+    <p>Pipeline: dados brutos → star-schema (BigQuery-style, SQL ANSI) → KPIs e análise preditiva (Python/Pandas/NumPy) → este painel. Repositório e queries em <code>github.com/&lt;seu-usuário&gt;/analytics-ecommerce-star-schema</code>.</p>
+  </header>
+
+  <div class="kpis" id="kpiCards"></div>
+
+  <div class="panel">
+    <h2>Receita mensal e projeção (regressão linear, 3 meses)</h2>
+    <p class="desc">Receita realizada (2025–2026) e previsão dos próximos 3 meses a partir da tendência histórica.</p>
+    <div class="legend">
+      <span><i style="background:var(--series-1)"></i>Receita realizada</span>
+      <span><i style="background:var(--series-2)"></i>Previsão (regressão linear)</span>
+    </div>
+    <div class="chart-wrap" id="lineChartWrap"></div>
+  </div>
+
+  <div class="grid-2">
+    <div class="panel">
+      <h2>Receita por categoria</h2>
+      <p class="desc">Total do período, ordenado por receita.</p>
+      <div class="chart-wrap" id="catChartWrap"></div>
+    </div>
+    <div class="panel">
+      <h2>Receita por região</h2>
+      <p class="desc">Total do período, ordenado por receita.</p>
+      <div class="chart-wrap" id="regChartWrap"></div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>Taxa de cancelamento por canal</h2>
+    <p class="desc">Cancelados ÷ total de pedidos, por canal de venda.</p>
+    <div class="chart-wrap" id="cancelChartWrap"></div>
+  </div>
+
+  <footer>
+    Dados sintéticos gerados para fins de portfólio (sem informação real de clientes). Star-schema, consultas SQL e ETL completos
+    disponíveis no repositório do projeto. Ideia de evolução: publicar o mesmo modelo no BigQuery e este painel no Looker Studio.
+  </footer>
+</div>
+
+<div class="tooltip" id="tooltip"></div>
+
+<script>
+const DATA = __KPI_DATA__;
+
+const fmtBRL = (v) => "R$ " + v.toLocaleString("pt-BR", { maximumFractionDigits: 0 });
+const fmtBRLfull = (v) => "R$ " + v.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const fmtPct = (v) => v.toLocaleString("pt-BR", { maximumFractionDigits: 2 }) + "%";
+const tooltip = document.getElementById("tooltip");
+
+function showTip(evt, html) {
+  tooltip.innerHTML = html;
+  tooltip.style.left = evt.pageX + "px";
+  tooltip.style.top = evt.pageY + "px";
+  tooltip.style.opacity = 1;
+}
+function hideTip() { tooltip.style.opacity = 0; }
+
+// ---------- KPI cards ----------
+const k = DATA.kpis;
+const kpiCards = [
+  { label: "Receita total (período)", value: fmtBRL(k.receita_total) },
+  { label: "Pedidos concluídos", value: k.pedidos_total.toLocaleString("pt-BR") },
+  { label: "Ticket médio", value: fmtBRL(k.ticket_medio_geral) },
+  { label: "Taxa de cancelamento", value: fmtPct(k.taxa_cancelamento_pct),
+    sub: (k.taxa_cancelamento_pct > 6 ? "acima da meta (6%)" : "dentro da meta"),
+    subClass: k.taxa_cancelamento_pct > 6 ? "down" : "up" },
+];
+document.getElementById("kpiCards").innerHTML = kpiCards.map(c => `
+  <div class="kpi-card">
+    <div class="kpi-label">${c.label}</div>
+    <div class="kpi-value">${c.value}</div>
+    ${c.sub ? `<div class="kpi-sub ${c.subClass}">${c.sub}</div>` : ""}
+  </div>
+`).join("");
+
+// ---------- Line chart: receita mensal + previsão ----------
+function lineChart() {
+  const hist = DATA.receita_mensal.map(d => ({ x: d.year_month, y: d.receita }));
+  const fcst = DATA.previsao_3_meses.map(d => ({ x: d.year_month, y: d.receita_prevista }));
+  const all = hist.concat(fcst);
+  const w = 1000, h = 260, padL = 54, padR = 16, padT = 16, padB = 30;
+  const innerW = w - padL - padR, innerH = h - padT - padB;
+
+  const ys = all.map(d => d.y);
+  const yMin = Math.min(...ys) * 0.95, yMax = Math.max(...ys) * 1.05;
+  const xStep = innerW / (all.length - 1);
+  const xPos = (i) => padL + i * xStep;
+  const yPos = (v) => padT + innerH - ((v - yMin) / (yMax - yMin)) * innerH;
+
+  const gridLines = [0, 0.25, 0.5, 0.75, 1].map(t => {
+    const y = padT + innerH * t;
+    const val = yMax - (yMax - yMin) * t;
+    return `<line class="gridline" x1="${padL}" x2="${w - padR}" y1="${y}" y2="${y}" />
+            <text class="axis-label" x="${padL - 8}" y="${y + 3}" text-anchor="end">${fmtBRL(val)}</text>`;
+  }).join("");
+
+  const histPath = hist.map((d, i) => `${i === 0 ? "M" : "L"}${xPos(i)},${yPos(d.y)}`).join(" ");
+  const fcstStartIdx = hist.length - 1;
+  const fcstPts = [hist[hist.length - 1]].concat(fcst);
+  const fcstPath = fcstPts.map((d, i) => `${i === 0 ? "M" : "L"}${xPos(fcstStartIdx + i)},${yPos(d.y)}`).join(" ");
+
+  const xLabels = all.map((d, i) => (i % 3 === 0 ? `<text class="axis-label" x="${xPos(i)}" y="${h - 8}" text-anchor="middle">${d.x}</text>` : "")).join("");
+
+  const dots = all.map((d, i) => {
+    const isForecast = i >= hist.length;
+    return `<circle cx="${xPos(i)}" cy="${yPos(d.y)}" r="4" fill="${isForecast ? "var(--series-2)" : "var(--series-1)"}"
+      data-x="${d.x}" data-y="${d.y}" data-forecast="${isForecast}" class="pt" />`;
+  }).join("");
+
+  const svg = `
+  <svg viewBox="0 0 ${w} ${h}" role="img" aria-label="Receita mensal e previsão">
+    ${gridLines}
+    <line class="baseline" x1="${padL}" x2="${w - padR}" y1="${padT + innerH}" y2="${padT + innerH}" />
+    <path d="${histPath}" fill="none" stroke="var(--series-1)" stroke-width="2" stroke-linecap="round" />
+    <path d="${fcstPath}" fill="none" stroke="var(--series-2)" stroke-width="2" stroke-dasharray="5,4" stroke-linecap="round" />
+    ${dots}
+    ${xLabels}
+  </svg>`;
+  document.getElementById("lineChartWrap").innerHTML = svg;
+
+  document.querySelectorAll("#lineChartWrap .pt").forEach(el => {
+    el.addEventListener("mouseenter", (evt) => {
+      const isF = el.dataset.forecast === "true";
+      showTip(evt, `<b>${el.dataset.x}</b><br>${isF ? "Previsão" : "Receita"}: ${fmtBRLfull(parseFloat(el.dataset.y))}`);
+    });
+    el.addEventListener("mousemove", (evt) => {
+      tooltip.style.left = evt.pageX + "px";
+      tooltip.style.top = evt.pageY + "px";
+    });
+    el.addEventListener("mouseleave", hideTip);
+  });
+}
+
+// ---------- Bar chart genérico (horizontal) ----------
+function hBarChart(containerId, rows, labelKey, valueKey, colorVar, fmt, w = 480) {
+  const rowH = 30, padL = 120, padR = 70, padT = 6;
+  const h = padT * 2 + rows.length * rowH;
+  const maxV = Math.max(...rows.map(r => r[valueKey]));
+  const innerW = w - padL - padR;
+
+  const bars = rows.map((r, i) => {
+    const y = padT + i * rowH;
+    const barW = (r[valueKey] / maxV) * innerW;
+    return `
+      <text class="bar-label" x="${padL - 8}" y="${y + rowH / 2 + 4}" text-anchor="end">${r[labelKey]}</text>
+      <rect x="${padL}" y="${y + 6}" width="${Math.max(barW,2)}" height="${rowH - 12}" rx="4" fill="var(${colorVar})"
+        class="hbar" data-label="${r[labelKey]}" data-value="${r[valueKey]}" />
+      <text class="bar-label" x="${padL + barW + 6}" y="${y + rowH / 2 + 4}">${fmt(r[valueKey])}</text>
+    `;
+  }).join("");
+
+  const svg = `<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="${containerId}">
+    <line class="baseline" x1="${padL}" x2="${padL}" y1="0" y2="${h}" />
+    ${bars}
+  </svg>`;
+  document.getElementById(containerId).innerHTML = svg;
+
+  document.querySelectorAll(`#${containerId} .hbar`).forEach(el => {
+    el.addEventListener("mouseenter", (evt) => showTip(evt, `<b>${el.dataset.label}</b><br>${fmt(parseFloat(el.dataset.value))}`));
+    el.addEventListener("mousemove", (evt) => { tooltip.style.left = evt.pageX + "px"; tooltip.style.top = evt.pageY + "px"; });
+    el.addEventListener("mouseleave", hideTip);
+  });
+}
+
+lineChart();
+hBarChart("catChartWrap", DATA.receita_por_categoria, "category", "receita", "--series-1", fmtBRL);
+hBarChart("regChartWrap", DATA.receita_por_regiao, "region", "receita", "--series-3", fmtBRL);
+hBarChart("cancelChartWrap", DATA.cancelamento_por_canal, "channel_name", "taxa_cancelamento_pct", "--series-4", fmtPct, 1000);
+</script>
+</body>
+</html>

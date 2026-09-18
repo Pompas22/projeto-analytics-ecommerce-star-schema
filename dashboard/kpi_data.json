@@ -1,0 +1,224 @@
+{
+  "kpis": {
+    "receita_total": 4834661.87,
+    "pedidos_total": 5591,
+    "ticket_medio_geral": 864.72,
+    "taxa_cancelamento_pct": 6.82,
+    "tendencia_mensal_pct": -0.25
+  },
+  "receita_mensal": [
+    {
+      "year_month": "2025-01",
+      "receita": 232640.81,
+      "pedidos": 274,
+      "ticket_medio": 849.05
+    },
+    {
+      "year_month": "2025-02",
+      "receita": 225970.02,
+      "pedidos": 266,
+      "ticket_medio": 849.51
+    },
+    {
+      "year_month": "2025-03",
+      "receita": 244404.12,
+      "pedidos": 288,
+      "ticket_medio": 848.63
+    },
+    {
+      "year_month": "2025-04",
+      "receita": 278117.84,
+      "pedidos": 313,
+      "ticket_medio": 888.56
+    },
+    {
+      "year_month": "2025-05",
+      "receita": 279150.0,
+      "pedidos": 303,
+      "ticket_medio": 921.29
+    },
+    {
+      "year_month": "2025-06",
+      "receita": 244053.29,
+      "pedidos": 292,
+      "ticket_medio": 835.8
+    },
+    {
+      "year_month": "2025-07",
+      "receita": 248970.45,
+      "pedidos": 318,
+      "ticket_medio": 782.93
+    },
+    {
+      "year_month": "2025-08",
+      "receita": 233177.52,
+      "pedidos": 263,
+      "ticket_medio": 886.61
+    },
+    {
+      "year_month": "2025-09",
+      "receita": 247222.07,
+      "pedidos": 283,
+      "ticket_medio": 873.58
+    },
+    {
+      "year_month": "2025-10",
+      "receita": 251942.7,
+      "pedidos": 284,
+      "ticket_medio": 887.12
+    },
+    {
+      "year_month": "2025-11",
+      "receita": 251279.44,
+      "pedidos": 295,
+      "ticket_medio": 851.79
+    },
+    {
+      "year_month": "2025-12",
+      "receita": 264373.66,
+      "pedidos": 281,
+      "ticket_medio": 940.83
+    },
+    {
+      "year_month": "2026-01",
+      "receita": 215192.57,
+      "pedidos": 280,
+      "ticket_medio": 768.54
+    },
+    {
+      "year_month": "2026-02",
+      "receita": 183520.45,
+      "pedidos": 208,
+      "ticket_medio": 882.31
+    },
+    {
+      "year_month": "2026-03",
+      "receita": 287553.83,
+      "pedidos": 315,
+      "ticket_medio": 912.87
+    },
+    {
+      "year_month": "2026-04",
+      "receita": 243325.41,
+      "pedidos": 285,
+      "ticket_medio": 853.77
+    },
+    {
+      "year_month": "2026-05",
+      "receita": 236325.89,
+      "pedidos": 268,
+      "ticket_medio": 881.81
+    },
+    {
+      "year_month": "2026-06",
+      "receita": 230733.61,
+      "pedidos": 263,
+      "ticket_medio": 877.31
+    },
+    {
+      "year_month": "2026-07",
+      "receita": 245557.38,
+      "pedidos": 300,
+      "ticket_medio": 818.52
+    },
+    {
+      "year_month": "2026-08",
+      "receita": 191150.81,
+      "pedidos": 212,
+      "ticket_medio": 901.65
+    }
+  ],
+  "previsao_3_meses": [
+    {
+      "year_month": "2026-08",
+      "receita_prevista": 238326.19
+    },
+    {
+      "year_month": "2026-09",
+      "receita_prevista": 237719.27
+    },
+    {
+      "year_month": "2026-10",
+      "receita_prevista": 237112.36
+    }
+  ],
+  "receita_por_categoria": [
+    {
+      "category": "Esporte",
+      "receita": 1284172.29,
+      "margem_bruta": 502654.71,
+      "margem_pct": 39.1
+    },
+    {
+      "category": "Casa",
+      "receita": 1164855.74,
+      "margem_bruta": 532088.11,
+      "margem_pct": 45.7
+    },
+    {
+      "category": "Beleza",
+      "receita": 1055285.94,
+      "margem_bruta": 426367.47,
+      "margem_pct": 40.4
+    },
+    {
+      "category": "Eletrônicos",
+      "receita": 874472.63,
+      "margem_bruta": 342780.0,
+      "margem_pct": 39.2
+    },
+    {
+      "category": "Moda",
+      "receita": 455875.27,
+      "margem_bruta": 188307.04,
+      "margem_pct": 41.3
+    }
+  ],
+  "receita_por_regiao": [
+    {
+      "region": "Sudeste",
+      "receita": 2122114.95,
+      "clientes_ativos": 178
+    },
+    {
+      "region": "Nordeste",
+      "receita": 1049302.49,
+      "clientes_ativos": 88
+    },
+    {
+      "region": "Sul",
+      "receita": 990234.24,
+      "clientes_ativos": 81
+    },
+    {
+      "region": "Centro-Oeste",
+      "receita": 470804.25,
+      "clientes_ativos": 38
+    },
+    {
+      "region": "Norte",
+      "receita": 202205.94,
+      "clientes_ativos": 15
+    }
+  ],
+  "cancelamento_por_canal": [
+    {
+      "channel_name": "Marketplace",
+      "total_pedidos": 1455,
+      "cancelados": 118.0,
+      "taxa_cancelamento_pct": 8.11
+    },
+    {
+      "channel_name": "Site",
+      "total_pedidos": 2152,
+      "cancelados": 146.0,
+      "taxa_cancelamento_pct": 6.78
+    },
+    {
+      "channel_name": "App",
+      "total_pedidos": 2393,
+      "cancelados": 145.0,
+      "taxa_cancelamento_pct": 6.06
+    }
+  ]
+}
